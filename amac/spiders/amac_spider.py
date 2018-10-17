@@ -63,7 +63,8 @@ class AmacSpider(scrapy.Spider):
         fund_official_url = response.xpath(
             '/html/body/div/div[2]/div/table/tbody/tr[13]/td[4]/a/text()').extract_first()
         if fund_official_url:
-            fund_official_url = 'http://' + fund_official_url
+            if 'http' not in fund_official_url:
+                fund_official_url = 'http://' + fund_official_url
             item['fund_official_url'] = fund_official_url
             yield scrapy.Request(fund_official_url, callback=self.parse_fund_offical_site,
                                  errback=self.errback_parse_fund_offical_site,
